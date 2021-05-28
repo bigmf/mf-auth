@@ -1,0 +1,85 @@
+/* tailwind */
+@tailwind base;
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  a {
+    @apply text-blue-600 underline;
+  }
+}
+
+@tailwind components;
+
+@tailwind utilities;
+
+/* next css */
+@custom-selector :--heading h1, h2, h3, h4, h5, h6;
+
+:root {
+  --mainColor: #12345678;
+}
+
+body {
+  color: var(--mainColor);
+  font-family: system-ui;
+  overflow-wrap: break-word;
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+a:hover {
+  color: unset;
+}
+
+/* login css */
+.login-container {
+  @apply flex justify-center w-screen h-screen;
+}
+
+.login-box {
+  @apply w-1/3 mt-40;
+}
+
+.login-title {
+  @apply text-center font-bold text-4xl tracking-widest mb-4;
+}
+
+.login-form {
+  @apply rounded shadow-2xl border-solid border px-10 pt-10 pb-8;
+}
+
+.login-form-group {
+  @apply flex flex-col mb-4;
+}
+
+.login-form-group label {
+  @apply mb-2 uppercase font-bold text-lg text-gray-800;
+}
+
+.login-form-group input {
+  @apply border py-2 px-3 text-gray-800;
+}
+
+.login-form-action {
+  @apply relative;
+}
+
+.login-form-action .action-login {
+  @apply block tracking-widest bg-green-400 hover:bg-green-500 text-white uppercase text-2xl mx-auto px-6 py-2 rounded;
+}
+
+.login-form-action span {
+  @apply absolute right-0 top-1/2 transform -translate-y-1/2;
+}
+/* login css */

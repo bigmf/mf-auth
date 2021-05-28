@@ -2,18 +2,25 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { MicroAppStateActions, LoadableApp } from 'qiankun'
 import { AppProps } from 'single-spa'
+import { singleton } from './singleton'
+import './public-path'
 import App from './App'
 
-interface LifeCycleProps extends AppProps, MicroAppStateActions {
-  container: HTMLElement
+interface ContainerProps {
+  container?: HTMLElement
 }
+interface LifeCycleProps
+  extends ContainerProps,
+    AppProps,
+    MicroAppStateActions {}
 
-function render(container = document.querySelector('.mf-auth-container')) {
-  ReactDOM.render(<App />, container)
+function render(props: ContainerProps) {
+  const { container = document } = props
+  ReactDOM.render(<App />, container.querySelector('.mf-passport-container'))
 }
 
 if (!window.__POWERED_BY_QIANKUN__) {
-  render()
+  render({})
 }
 
 export const bootstrap = async function bootstrap() {
@@ -21,24 +28,25 @@ export const bootstrap = async function bootstrap() {
 }
 
 export async function mount(props: LifeCycleProps) {
+  singleton.setGlobalState = props.setGlobalState
+  singleton.onGlobalStateChange = props.onGlobalStateChange
   props.onGlobalStateChange((state, prev) => {
     console.log(state, prev)
   })
-  props.setGlobalState({
-    visibleSiderBar: false,
-    visibleHeader: false
-  })
-  render(props.container.querySelector('.mf-auth-container') as HTMLElement)
+  // props.setGlobalState({
+  //   visibleSiderBar: false,
+  //   visibleHeader: false
+  // })
+  render(props)
 }
 
 export async function unmount(props: LifeCycleProps) {
-  props.setGlobalState({
-    visibleSiderBar: true,
-    visibleHeader: true
-  })
+  const { container = document } = props
+  // props.setGlobalState({
+  //   visibleSiderBar: true,
+  //   visibleHeader: true
+  // })
   ReactDOM.unmountComponentAtNode(
-    props.container
-      ? (props.container.querySelector('.mf-auth-container') as HTMLElement)
-      : (document.querySelector('.mf-auth-container') as HTMLElement)
+    container.querySelector('.mf-passport-container') as HTMLElement
   )
 }
